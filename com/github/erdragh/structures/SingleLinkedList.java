@@ -86,10 +86,10 @@ public class SingleLinkedList<T> implements IList<T> {
 
 		@Override
 		public Node<T> insert(int i, int current, T data) {
-			if (i == current) {
+			if (i == current++) {
 				return new DataNode<T>(this, data);
 			} else {
-				next = next.insert(i, ++current, data);
+				next = next.insert(i, current, data);
 				return this;
 			}
 		}
