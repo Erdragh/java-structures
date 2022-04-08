@@ -112,20 +112,21 @@ public class SingleLinkedList<T> implements IList<T> {
 		 * @see EndNode
 		 */
 		public abstract Node<T> removeBefore(int i, int current);
-		/**
-		 * Removes the last element of the list, this is the init method
-		 * @return a node for the caller to set to next.
-		 */
-		public abstract Node<T> removeLast();
-		/**
-		 * Removes the last element of the list, this is the actual recursive method, to init this, call the init method.
-		 * @return a <code>Node</code> that is used to set the next attribute in the <code>DataNode</code> so the nodes do not need to know its previous nodes
-		 * @param caller the node that called the method recursively
-		 * @param prev the node before the node that called the methord recursively
-		 * @see DataNode
-		 * @see EndNode
-		 */
-		public abstract Node<T> removeLast(Node<T> caller, Node<T> prev);
+		//Disabled because it does not work and is not needed
+		// /**
+		//  * Removes the last element of the list, this is the init method
+		//  * @return a node for the caller to set to next.
+		//  */
+		// public abstract Node<T> removeLast();
+		// /**
+		//  * Removes the last element of the list, this is the actual recursive method, to init this, call the init method.
+		//  * @return a <code>Node</code> that is used to set the next attribute in the <code>DataNode</code> so the nodes do not need to know its previous nodes
+		//  * @param caller the node that called the method recursively
+		//  * @param prev the node before the node that called the methord recursively
+		//  * @see DataNode
+		//  * @see EndNode
+		//  */
+		// public abstract Node<T> removeLast(Node<T> caller, Node<T> prev);
 
 		/**
 		 * A getter method
@@ -305,28 +306,28 @@ public class SingleLinkedList<T> implements IList<T> {
 			}
 		}
 
-		@Override
-		public Node<T> removeLast() {
-			//inits the recurive method
-			if (next.removeLast() != null) {
-				//this method call will have the next (usually second) node set the next attribute for this node (usually the start node) twice. This does still work, the fact that we give this node as the parameter twice is intended!
-				next.removeLast(this, this);
-				//returns this node so the list can set its start node to the correct node
-				return this;
-			} else {
-				//this is only executed if the start node is also the last datanode. This will return the EndNode to the list so the start node is an EndNode
-				return next;
-			}
-		}
+		// @Override
+		// public Node<T> removeLast() {
+		// 	//inits the recurive method
+		// 	if (next.removeLast() != null) {
+		// 		//this method call will have the next (usually second) node set the next attribute for this node (usually the start node) twice. This does still work, the fact that we give this node as the parameter twice is intended!
+		// 		next.removeLast(this, this);
+		// 		//returns this node so the list can set its start node to the correct node
+		// 		return this;
+		// 	} else {
+		// 		//this is only executed if the start node is also the last datanode. This will return the EndNode to the list so the start node is an EndNode
+		// 		return next;
+		// 	}
+		// }
 
-		@Override
-		public Node<T> removeLast(Node<T> caller, Node<T> prev) {
-			//Sets the next attribute to the return value of a recursive call to this method on the next attribute. This is done in order for the EndNode to be able to 
-			prev.setNext(caller);
-			caller.setNext(this);
-			next = next.removeLast(this, caller);
-			return this;
-		}
+		// @Override
+		// public Node<T> removeLast(Node<T> caller, Node<T> prev) {
+		// 	//Sets the next attribute to the return value of a recursive call to this method on the next attribute. This is done in order for the EndNode to be able to 
+		// 	prev.setNext(caller);
+		// 	caller.setNext(this);
+		// 	next = next.removeLast(this, caller);
+		// 	return this;
+		// }
 
 		@Override
 		public void setNext(Node<T> next) {
@@ -422,18 +423,18 @@ public class SingleLinkedList<T> implements IList<T> {
 			return this;
 		}
 
-		@Override
-		public Node<T> removeLast() {
-			//return null for the test in the init method in the DataNode
-			return null;
-		}
+		// @Override
+		// public Node<T> removeLast() {
+		// 	//return null for the test in the init method in the DataNode
+		// 	return null;
+		// }
 
-		@Override
-		public Node<T> removeLast(Node<T> caller, Node<T> prev) {
-			//doesnt set the callers next, instead sets the node before the caller's next. This removes all references to the last DataNode, therefore having them be deleted with the Garbage Collector
-			prev.setNext(this);
-			return null;
-		}
+		// @Override
+		// public Node<T> removeLast(Node<T> caller, Node<T> prev) {
+		// 	//doesnt set the callers next, instead sets the node before the caller's next. This removes all references to the last DataNode, therefore having them be deleted with the Garbage Collector
+		// 	prev.setNext(this);
+		// 	return null;
+		// }
 
 		@Override
 		public void setNext(Node<T> next) {
@@ -464,7 +465,8 @@ public class SingleLinkedList<T> implements IList<T> {
 	public T take() {
 		//Since this method is supposed to return the data and remove the last element. Since this is not really possible with a recursive method in a single link list we will first get the data then store it temporarily, then delete the last element (this is the hardest part, since it's only really possible in a double link list, which is why the actual method half resembles a double linked list)
 		T data = start.take();
-		start.removeLast();
+		// start.removeLast();
+		remove(length()-1);
 		return data;
 	}
 
